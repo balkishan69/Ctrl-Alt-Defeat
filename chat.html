@@ -1,0 +1,112 @@
+<style>
+    /* Add these styles to the existing code */
+
+    body{
+        background-color: bisque;
+    }
+  
+    /* Header Styles */
+    header {
+      background-color: #2ecc71; /* Emerald Green */
+      color: #fff;
+    }
+  
+    /* Navigation Styles */
+    nav {
+      background-color: #3498db; /* Dodger Blue */
+      color: #fff;
+    }
+  
+    nav a:hover {
+      background-color: #2980b9; /* Darker Dodger Blue on Hover */
+    }
+  
+    /* Chat Container Styles */
+    #chat-container {
+      border: 1px solid #ecf0f1; /* Clouds */
+      padding: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+  
+    #chat-input {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      margin-top: 10px;
+      border: 1px solid #bdc3c7; /* Silver */
+      border-radius: 5px;
+    }
+  
+    #send-btn {
+      background-color: #2ecc71; /* Emerald Green */
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  
+    #send-btn:hover {
+      background-color: #27ae60; /* Nephritis on Hover */
+    }
+    h1{
+        text-align: center;
+        font-size: 30px;
+    }
+  </style>
+  
+
+<main>
+    <section>
+      <h1>Chat with Peers</h1>
+      <br>
+      <br>
+
+      <div id="chat-container">
+        <div id="chat-messages"></div>
+        <input type="text" id="chat-input" placeholder="Type your message">
+        <br>
+        <br>
+        
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </section>
+
+    <!-- Add more sections or content as needed -->
+
+  </main>
+
+  <footer>
+    <!-- Add your footer content here -->
+  </footer>
+
+  <script>
+    // Add your JavaScript code here
+    const socket = new WebSocket('ws://your-backend-url'); // Replace with your backend WebSocket URL
+
+socket.addEventListener('message', (event) => {
+  const messagesElement = document.getElementById('chat-messages');
+  messagesElement.innerHTML += `<div>${event.data}</div>`;
+});
+
+function sendMessage() {
+  const inputElement = document.getElementById('chat-input');
+  const message = inputElement.value;
+  if (message.trim() === '') {
+    return;
+  }
+
+  socket.send(message);
+
+  // For simplicity, append the message directly to the chat container
+  const messagesElement = document.getElementById('chat-messages');
+  messagesElement.innerHTML += `<div><strong>You:</strong> ${message}</div>`;
+
+  // Clear the input field
+  inputElement.value = '';
+}
+  </script>
